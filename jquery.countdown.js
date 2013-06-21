@@ -26,7 +26,7 @@
 			hour: 3600000,
 			day: 86400000,
 
-			endDate: new Date($.fn.countDown.options.endDate).getTime(),
+			endDate: new Date(options.endDate).getTime(),
 
 			calculateTimeRemaining: function(t){
 				var timeRemaining = countDown.endDate - countDown.now;
@@ -75,7 +75,7 @@
 					days:    countDown.calculateTimeRemaining('days')
 				};
 
-				templateHTML = countDown.parseTemplate($.fn.countDown.options.templateString, templateTags);
+				templateHTML = countDown.parseTemplate(options.templateString, templateTags);
 
 				countDown.elem.html(templateHTML);
 
