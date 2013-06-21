@@ -2,28 +2,28 @@ jQuery.fn.countDown = function(endDate, templateString) {
 	var countDown = {
 		elem: this,
 
+		second: 1000,
+		minute: 60000,
+		hour: 3600000,
+		day: 86400000,
+
 		endDate: new Date(endDate).getTime(),
 
 		calculateTimeRemaining: function(t){
-			var second        = 1000;
-			var minute        = second * 60;
-			var hour          = minute * 60;
-			var day           = hour * 24;
-
 			var now           = new Date().getTime();
 			var timeRemaining = countDown.endDate - now;
 
 			if ( t === 'seconds' ) {
-				return Math.floor((timeRemaining % minute) / second);
+				return Math.floor((timeRemaining % countDown.minute) / countDown.second);
 			}
 			if ( t === 'minutes' ) {
-				return Math.floor((timeRemaining % hour) / minute);
+				return Math.floor((timeRemaining % countDown.hour) / countDown.minute);
 			}
 			if ( t === 'hours' ) {
-				return Math.floor((timeRemaining % day) / hour);
+				return Math.floor((timeRemaining % countDown.day) / countDown.hour);
 			}
 			if ( t === 'days' ) {
-				return Math.floor(timeRemaining / day);
+				return Math.floor(timeRemaining / countDown.day);
 			}
 		},
 
