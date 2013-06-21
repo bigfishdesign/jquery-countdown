@@ -24,19 +24,14 @@ jQuery.fn.countDown = function(endDate, templateString) {
 		},
 
 		defaultTemplate: '<div class="countdown">' +
-			'<h3 class="countdown-title">Not long left&hellip;</h3>' +
-			'<div id="countdown-days">' +
 			'<span class="countdown-number">' +
 			'{{ days }}' +
-			'</span>' +
-			'<span class="countdown-title">Days</span>' +
-			'</div>' +
-			'<div id="countdown-hours">' +
+			'</span> ' +
+			'<span class="countdown-title">days</span> ' +
 			'<span class="countdown-number">' +
 			'{{ hours }}' +
-			'</span>' +
-			'<span class="countdown-title">Hours</span>' +
-			'</div></div>',
+			'</span> ' +
+			'<span class="countdown-title">hours</span>',
 
 		parseTemplate: function(templateString, templateTags) {
 			jQuery.each(
