@@ -1,6 +1,22 @@
 (function ( $ ) {
 
-	$.fn.countDown = function(endDate, templateString) {
+	$.fn.countDown = function(options) {
+
+		var defaultOptions = {
+			endDate: "01/19/2038 03:14:08",
+			templateString: '<div class="countdown">' +
+				'<span class="countdown-number">{{ days }}</span> ' +
+				'<span class="countdown-title">days</span> ' +
+				'<span class="countdown-number">{{ hours }}</span> ' +
+				'<span class="countdown-title">hours</span> ' +
+				'<span class="countdown-number">{{ minutes }}</span> ' +
+				'<span class="countdown-title">minutes</span> ' +
+				'<span class="countdown-number">{{ seconds }}</span> ' +
+				'<span class="countdown-title">seconds</span>'
+		};
+
+		options = $.extend({}, defaultOptions, options );
+
 		var countDown = {
 			elem: this,
 
@@ -10,7 +26,7 @@
 			hour: 3600000,
 			day: 86400000,
 
-			endDate: new Date(endDate).getTime(),
+			endDate: new Date($.fn.countDown.options.endDate).getTime(),
 
 			calculateTimeRemaining: function(t){
 				var timeRemaining = countDown.endDate - countDown.now;
@@ -30,16 +46,6 @@
 
 				return 0;
 			},
-
-			defaultTemplate: '<div class="countdown">' +
-				'<span class="countdown-number">{{ days }}</span> ' +
-				'<span class="countdown-title">days</span> ' +
-				'<span class="countdown-number">{{ hours }}</span> ' +
-				'<span class="countdown-title">hours</span> ' +
-				'<span class="countdown-number">{{ minutes }}</span> ' +
-				'<span class="countdown-title">minutes</span> ' +
-				'<span class="countdown-number">{{ seconds }}</span> ' +
-				'<span class="countdown-title">seconds</span>',
 
 			parseTemplate: function(templateString, templateTags) {
 				$.each(
@@ -69,14 +75,8 @@
 					days:    countDown.calculateTimeRemaining('days')
 				};
 
-				// If we don't have a templating function, use the default
-				if ( typeof templateString !== 'string' ) {
-					templateString = countDown.defaultTemplate;
-				}
+				templateHTML = countDown.parseTemplate($.fn.countDown.options.templateString, templateTags);
 
-				templateHTML = countDown.parseTemplate(templateString, templateTags);
-
-				// otherwise, inject the countdown into the promotion
 				countDown.elem.html(templateHTML);
 
 				setTimeout(countDown.update, 500);
