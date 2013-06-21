@@ -2,6 +2,7 @@ jQuery.fn.countDown = function(endDate, templateString) {
 	var countDown = {
 		elem: this,
 
+		now: 0,
 		second: 1000,
 		minute: 60000,
 		hour: 3600000,
@@ -10,8 +11,7 @@ jQuery.fn.countDown = function(endDate, templateString) {
 		endDate: new Date(endDate).getTime(),
 
 		calculateTimeRemaining: function(t){
-			var now           = new Date().getTime();
-			var timeRemaining = countDown.endDate - now;
+			var timeRemaining = countDown.endDate - countDown.now;
 
 			if ( t === 'seconds' ) {
 				return Math.floor((timeRemaining % countDown.minute) / countDown.second);
@@ -49,12 +49,12 @@ jQuery.fn.countDown = function(endDate, templateString) {
 		},
 
 		update: function() {
-			var now, days, hours, templateTags, templateHTML;
+			var templateTags, templateHTML;
 
-			now = new Date().getTime();
+			countDown.now = new Date().getTime();
 
 			// If the countdown has ended, do nothing
-			if ( countDown.endDate - now < 0 ) {
+			if ( countDown.endDate - countDown.now < 0 ) {
 				return;
 			}
 
