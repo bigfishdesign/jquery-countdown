@@ -25,6 +25,8 @@ jQuery.fn.countDown = function(endDate, templateString) {
 			if ( t === 'days' ) {
 				return Math.floor(timeRemaining / countDown.day);
 			}
+
+			return 0;
 		},
 
 		defaultTemplate: '<div class="countdown">' +
