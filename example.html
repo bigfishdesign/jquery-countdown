@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+
+	<title>jquery-countdown</title>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+	<script src="jquery.countdown.js"></script>
+</head>
+<body>
+
+	<h1>jquery-countdown</h1>
+
+	<h2>Default options</h2>
+
+	<div id="countdown1">
+	</div>
+
+	<p>Call in this example:</p>
+
+	<pre>
+	<code>
+	jQuery('#countdown1').countDown('01/01/2030');
+	</code>
+	</pre>
+
+	<script>
+	jQuery('#countdown1').countDown('01/01/2030');
+	</script>
+
+	<h2>Custom markup</h2>
+
+	<div id="countdown2">
+	</div>
+
+	<p>Call in this example:</p>
+
+	<pre>
+	<code>
+	jQuery('#countdown2').countDown('01/01/2030', '&lt;div&gt;{{ days }} days to go!&lt;/div&gt;');
+	</code>
+	</pre>
+
+	<script>
+	jQuery('#countdown2').countDown('01/01/2030', '<div>{{ days }} days to go!</div>');
+	</script>
+</body>
+</html>
