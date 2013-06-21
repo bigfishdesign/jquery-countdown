@@ -82,5 +82,7 @@ jQuery.fn.countDown = function(endDate, templateString) {
 	};
 
 	countDown.update();
+
+	return this;
 };
 
