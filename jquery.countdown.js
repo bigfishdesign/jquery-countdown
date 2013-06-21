@@ -1,32 +1,16 @@
 (function ( $ ) {
 
 	$.fn.countDown = function(options) {
-
-		var defaultOptions = {
-			endDate: "01/19/2038 03:14:08",
-			templateString: '<div class="countdown">' +
-				'<span class="countdown-number">{{ days }}</span> ' +
-				'<span class="countdown-title">days</span> ' +
-				'<span class="countdown-number">{{ hours }}</span> ' +
-				'<span class="countdown-title">hours</span> ' +
-				'<span class="countdown-number">{{ minutes }}</span> ' +
-				'<span class="countdown-title">minutes</span> ' +
-				'<span class="countdown-number">{{ seconds }}</span> ' +
-				'<span class="countdown-title">seconds</span>'
-		};
-
-		options = $.extend({}, defaultOptions, options );
+		options = $.extend({}, $.fn.countDown.defaultOptions, options );
 
 		var countDown = {
-			elem: this,
-
-			now: 0,
-			second: 1000,
-			minute: 60000,
-			hour: 3600000,
-			day: 86400000,
-
-			endDate: new Date(options.endDate).getTime(),
+			elem    : this,
+			now     : 0,
+			second  : 1000,
+			minute  : 60000,
+			hour    : 3600000,
+			day     : 86400000,
+			endDate : new Date(options.endDate).getTime(),
 
 			calculateTimeRemaining: function(t){
 				var timeRemaining = countDown.endDate - countDown.now;
@@ -86,6 +70,19 @@
 		countDown.update();
 
 		return this;
+	};
+
+	$.fn.countDown.defaultOptions = {
+		endDate: "01/19/2038 03:14:08",
+		templateString: '<div class="countdown">' +
+			'<span class="countdown-number">{{ days }}</span> ' +
+			'<span class="countdown-title">days</span> ' +
+			'<span class="countdown-number">{{ hours }}</span> ' +
+			'<span class="countdown-title">hours</span> ' +
+			'<span class="countdown-number">{{ minutes }}</span> ' +
+			'<span class="countdown-title">minutes</span> ' +
+			'<span class="countdown-number">{{ seconds }}</span> ' +
+			'<span class="countdown-title">seconds</span>'
 	};
 
 }( jQuery ));
