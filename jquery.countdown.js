@@ -5,33 +5,37 @@ jQuery.fn.countDown = function(endDate, templateString) {
 		endDate: new Date(endDate).getTime(),
 
 		calculateTimeRemaining: function(t){
-			var minute        = 1000 * 60;
+			var second        = 1000;
+			var minute        = second * 60;
 			var hour          = minute * 60;
 			var day           = hour * 24;
 
 			var now           = new Date().getTime();
 			var timeRemaining = countDown.endDate - now;
 
-			if ( t === 'minutes' ) {
-				return Math.floor(timeRemaining / minute);
+			if ( t === 'seconds' ) {
+				return Math.floor((timeRemaining % minute) / second);
 			}
-			if ( t === 'days' ) {
-				return Math.floor(timeRemaining / day);
+			if ( t === 'minutes' ) {
+				return Math.floor((timeRemaining % hour) / minute);
 			}
 			if ( t === 'hours' ) {
 				return Math.floor((timeRemaining % day) / hour);
 			}
+			if ( t === 'days' ) {
+				return Math.floor(timeRemaining / day);
+			}
 		},
 
 		defaultTemplate: '<div class="countdown">' +
-			'<span class="countdown-number">' +
-			'{{ days }}' +
-			'</span> ' +
+			'<span class="countdown-number">{{ days }}</span> ' +
 			'<span class="countdown-title">days</span> ' +
-			'<span class="countdown-number">' +
-			'{{ hours }}' +
-			'</span> ' +
-			'<span class="countdown-title">hours</span>',
+			'<span class="countdown-number">{{ hours }}</span> ' +
+			'<span class="countdown-title">hours</span> ' +
+			'<span class="countdown-number">{{ minutes }}</span> ' +
+			'<span class="countdown-title">minutes</span> ' +
+			'<span class="countdown-number">{{ seconds }}</span> ' +
+			'<span class="countdown-title">seconds</span>',
 
 		parseTemplate: function(templateString, templateTags) {
 			jQuery.each(
@@ -44,8 +48,8 @@ jQuery.fn.countDown = function(endDate, templateString) {
 			return templateString;
 		},
 
-		init: function() {
-			var now, days, hours, templateTags;
+		update: function() {
+			var now, days, hours, templateTags, templateHTML;
 
 			now = new Date().getTime();
 
@@ -55,8 +59,10 @@ jQuery.fn.countDown = function(endDate, templateString) {
 			}
 
 			templateTags = {
-				days: countDown.calculateTimeRemaining('days'),
-				hours: countDown.calculateTimeRemaining('hours')
+				seconds: countDown.calculateTimeRemaining('seconds'),
+				minutes: countDown.calculateTimeRemaining('minutes'),
+				hours:   countDown.calculateTimeRemaining('hours'),
+				days:    countDown.calculateTimeRemaining('days')
 			};
 
 			// If we don't have a templating function, use the default
@@ -64,13 +70,15 @@ jQuery.fn.countDown = function(endDate, templateString) {
 				templateString = countDown.defaultTemplate;
 			}
 
-			templateString = countDown.parseTemplate(templateString, templateTags);
+			templateHTML = countDown.parseTemplate(templateString, templateTags);
 
 			// otherwise, inject the countdown into the promotion
-			countDown.elem.append(templateString);
+			countDown.elem.html(templateHTML);
+
+			setTimeout(countDown.update, 500);
 		}
 	};
 
-	countDown.init();
+	countDown.update();
 };
 
