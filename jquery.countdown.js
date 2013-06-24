@@ -1,6 +1,17 @@
 (function ( $ ) {
 
-	$.fn.countDown = function(options) {
+	$.fn.countDown = function() {
+
+		var options = {};
+
+		if( arguments.length > 0 ) {
+			if( arguments[0] != null && typeof arguments[0] === 'object' ) {
+				options = arguments[0];
+			} else if( typeof arguments[0] === 'string' ) {
+				options.endDate = arguments[0];
+			}
+		}
+
 		options = $.extend({}, $.fn.countDown.defaultOptions, options );
 
 		var countDown = {

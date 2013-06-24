@@ -22,12 +22,12 @@
 
 	<pre>
 	<code>
-	jQuery('#countdown1').countDown({ endDate: '01/01/2030' });
+	jQuery('#countdown1').countDown('01/01/2030');
 	</code>
 	</pre>
 
 	<script>
-	jQuery('#countdown1').countDown({ endDate: '01/01/2030' });
+	jQuery('#countdown1').countDown('01/01/2030');
 	</script>
 
 	<h2>Custom markup</h2>
@@ -60,15 +60,15 @@
 	<pre>
 	<code>
 		jQuery.fn.countDown.defaultOptions.templateString = '&lt;div&gt;{{ days }} days to go!&lt;/div&gt;';
-		jQuery('#countdown3').countDown({endDate: '01/02/2030'});
-		jQuery('#countdown4').countDown({endDate: '01/03/2030'});
+		jQuery('#countdown3').countDown('01/02/2030');
+		jQuery('#countdown4').countDown('01/03/2030');
 	</code>
 	</pre>
 
 	<script>
 		jQuery.fn.countDown.defaultOptions.templateString = '<div>{{ days }} days to go!</div>';
-		jQuery('#countdown3').countDown({endDate: '01/02/2030'});
-		jQuery('#countdown4').countDown({endDate: '01/03/2030'});
+		jQuery('#countdown3').countDown('01/02/2030');
+		jQuery('#countdown4').countDown('01/03/2030');
 	</script>
 </body>
 </html>
