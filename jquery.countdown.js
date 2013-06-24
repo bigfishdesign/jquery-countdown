@@ -1,18 +1,25 @@
 (function ( $ ) {
 
-	$.fn.countDown = function() {
+	$.fn.countDown = function () {
 
-		var options = {};
+		var
+			options = {},
+			text = this.text()
+			;
 
-		if( arguments.length > 0 ) {
-			if( arguments[0] != null && typeof arguments[0] === 'object' ) {
+		if (arguments.length > 0) {
+			if (arguments[0] != null && typeof arguments[0] === 'object') {
 				options = arguments[0];
-			} else if( typeof arguments[0] === 'string' ) {
+			} else if (typeof arguments[0] === 'string') {
 				options.endDate = arguments[0];
 			}
 		}
 
-		options = $.extend({}, $.fn.countDown.defaultOptions, options );
+		if (typeof options.endDate === 'undefined' && text != '' && !isNaN(new Date(text).getTime())) {
+			options.endDate = this.text();
+		}
+
+		options = $.extend({}, $.fn.countDown.defaultOptions, options);
 
 		var countDown = {
 			elem    : this,
