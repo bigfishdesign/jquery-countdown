@@ -16,7 +16,7 @@
 		}
 
 		if (typeof options.endDate === 'undefined' && text != '' && !isNaN(new Date(text).getTime())) {
-			options.endDate = this.text();
+			options.endDate = text;
 		}
 
 		options = $.extend({}, $.fn.countDown.defaultOptions, options);
