@@ -1,33 +1,98 @@
-jQuery.fn.countDown = function(endDate, templateString) {
-	var countDown = {
-		elem: this,
+(function ( $ ) {
 
-		endDate: new Date(endDate).getTime(),
+	$.fn.countDown = function () {
 
-		calculateTimeRemaining: function(t){
-			var second        = 1000;
-			var minute        = second * 60;
-			var hour          = minute * 60;
-			var day           = hour * 24;
+		var
+			options = {},
+			text = this.text()
+			;
 
-			var now           = new Date().getTime();
-			var timeRemaining = countDown.endDate - now;
-
-			if ( t === 'seconds' ) {
-				return Math.floor((timeRemaining % minute) / second);
+		if (arguments.length > 0) {
+			if (arguments[0] != null && typeof arguments[0] === 'object') {
+				options = arguments[0];
+			} else if (typeof arguments[0] === 'string') {
+				options.endDate = arguments[0];
 			}
-			if ( t === 'minutes' ) {
-				return Math.floor((timeRemaining % hour) / minute);
-			}
-			if ( t === 'hours' ) {
-				return Math.floor((timeRemaining % day) / hour);
-			}
-			if ( t === 'days' ) {
-				return Math.floor(timeRemaining / day);
-			}
-		},
+		}
 
-		defaultTemplate: '<div class="countdown">' +
+		if (typeof options.endDate === 'undefined' && text != '' && !isNaN(new Date(text).getTime())) {
+			options.endDate = text;
+		}
+
+		options = $.extend({}, $.fn.countDown.defaultOptions, options);
+
+		var countDown = {
+			elem    : this,
+			now     : 0,
+			second  : 1000,
+			minute  : 60000,
+			hour    : 3600000,
+			day     : 86400000,
+			endDate : new Date(options.endDate).getTime(),
+
+			calculateTimeRemaining: function(t){
+				var timeRemaining = countDown.endDate - countDown.now;
+
+				if ( t === 'seconds' ) {
+					return Math.floor((timeRemaining % countDown.minute) / countDown.second);
+				}
+				if ( t === 'minutes' ) {
+					return Math.floor((timeRemaining % countDown.hour) / countDown.minute);
+				}
+				if ( t === 'hours' ) {
+					return Math.floor((timeRemaining % countDown.day) / countDown.hour);
+				}
+				if ( t === 'days' ) {
+					return Math.floor(timeRemaining / countDown.day);
+				}
+
+				return 0;
+			},
+
+			parseTemplate: function(templateString, templateTags) {
+				$.each(
+					templateTags,
+					function(key, value) {
+						templateString = templateString.replace(new RegExp('{{\\s*' + key + '\\s*}}', 'gi'), value);
+					}
+				);
+
+				return templateString;
+			},
+
+			update: function() {
+				var templateTags, templateHTML;
+
+				countDown.now = new Date().getTime();
+
+				// If the countdown has ended, do nothing
+				if ( countDown.endDate - countDown.now < 0 ) {
+					return;
+				}
+
+				templateTags = {
+					seconds: countDown.calculateTimeRemaining('seconds'),
+					minutes: countDown.calculateTimeRemaining('minutes'),
+					hours:   countDown.calculateTimeRemaining('hours'),
+					days:    countDown.calculateTimeRemaining('days')
+				};
+
+				templateHTML = countDown.parseTemplate(options.templateString, templateTags);
+
+				countDown.elem.html(templateHTML);
+
+				setTimeout(countDown.update, 500);
+			}
+		};
+
+		countDown.update();
+
+		return this;
+	};
+
+	$.fn.countDown.defaultOptions = {
+		endDate: "01/19/2038 03:14:08",
+		templateString: '<div class="countdown">' +
 			'<span class="countdown-number">{{ days }}</span> ' +
 			'<span class="countdown-title">days</span> ' +
 			'<span class="countdown-number">{{ hours }}</span> ' +
@@ -35,50 +100,7 @@ jQuery.fn.countDown = function(endDate, templateString) {
 			'<span class="countdown-number">{{ minutes }}</span> ' +
 			'<span class="countdown-title">minutes</span> ' +
 			'<span class="countdown-number">{{ seconds }}</span> ' +
-			'<span class="countdown-title">seconds</span>',
-
-		parseTemplate: function(templateString, templateTags) {
-			jQuery.each(
-				templateTags,
-				function(key, value) {
-					templateString = templateString.replace(new RegExp('{{\\s*' + key + '\\s*}}', 'gi'), value);
-				}
-			);
-
-			return templateString;
-		},
-
-		update: function() {
-			var now, days, hours, templateTags, templateHTML;
-
-			now = new Date().getTime();
-
-			// If the countdown has ended, do nothing
-			if ( countDown.endDate - now < 0 ) {
-				return;
-			}
-
-			templateTags = {
-				seconds: countDown.calculateTimeRemaining('seconds'),
-				minutes: countDown.calculateTimeRemaining('minutes'),
-				hours:   countDown.calculateTimeRemaining('hours'),
-				days:    countDown.calculateTimeRemaining('days')
-			};
-
-			// If we don't have a templating function, use the default
-			if ( typeof templateString !== 'string' ) {
-				templateString = countDown.defaultTemplate;
-			}
-
-			templateHTML = countDown.parseTemplate(templateString, templateTags);
-
-			// otherwise, inject the countdown into the promotion
-			countDown.elem.html(templateHTML);
-
-			setTimeout(countDown.update, 500);
-		}
+			'<span class="countdown-title">seconds</span>'
 	};
 
-	countDown.update();
-};
-
+}( jQuery ));

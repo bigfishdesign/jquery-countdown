@@ -12,10 +12,10 @@
 
 	<h1>jquery-countdown</h1>
 
+
 	<h2>Default options</h2>
 
-	<div id="countdown1">
-	</div>
+	<div id="countdown1"></div>
 
 	<p>Call in this example:</p>
 
@@ -31,19 +31,40 @@
 
 	<h2>Custom markup</h2>
 
-	<div id="countdown2">
-	</div>
+	<div id="countdown2"></div>
 
 	<p>Call in this example:</p>
 
 	<pre>
 	<code>
-	jQuery('#countdown2').countDown('01/01/2030', '&lt;div&gt;{{ days }} days to go!&lt;/div&gt;');
+	jQuery('#countdown2').countDown({ endDate: '01/01/2030', templateString: '&lt;div&gt;{{ days }} days to go!&lt;/div&gt;' });
 	</code>
 	</pre>
 
 	<script>
-	jQuery('#countdown2').countDown('01/01/2030', '<div>{{ days }} days to go!</div>');
+	jQuery('#countdown2').countDown({ endDate: '01/01/2030', templateString: '<div>{{ days }} days to go!</div>' });
+	</script>
+
+	<h2>Override defaults</h2>
+
+	<div id="countdown3"></div>
+
+	<div id="countdown4"></div>
+
+	<p>Call in this example:</p>
+
+	<pre>
+	<code>
+		jQuery.fn.countDown.defaultOptions.templateString = '&lt;div&gt;{{ days }} days to go!&lt;/div&gt;';
+		jQuery('#countdown3').countDown('01/02/2030');
+		jQuery('#countdown4').countDown('01/03/2030');
+	</code>
+	</pre>
+
+	<script>
+		jQuery.fn.countDown.defaultOptions.templateString = '<div>{{ days }} days to go!</div>';
+		jQuery('#countdown3').countDown('01/02/2030');
+		jQuery('#countdown4').countDown('01/03/2030');
 	</script>
 </body>
 </html>
